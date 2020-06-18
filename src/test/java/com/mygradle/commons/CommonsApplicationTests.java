@@ -1,13 +1,44 @@
 package com.mygradle.commons;
 
+import com.mygradle.commons.model.User;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit4.SpringRunner;
 
-@SpringBootTest
-class CommonsApplicationTests {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = CommonsApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class CommonsApplicationTests {
+    @Autowired
+    private TestRestTemplate restTemplate;
 
     @Test
-    void contextLoads() {
+    public void testGetUserById(){
+        String url = "http://localhost:8080/user/0";
+        User user = restTemplate.getForObject(url, User.class);
+        System.out.println("등록일:" + user.getRegDate() + "," + user.getUserId() + "," + user.getUserName());
     }
 
+    @Test
+    public void testGetUsers() {
+        String url = "http://localhost:8080/user";
+        ResponseEntity<Map<String, List<User>>> result = restTemplate.
+                exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<Map<String, List<User>>>() {
+                });
+        Map<String, List<User>> tempMap = (Map) result.getBody();
+
+        ArrayList<User> resultArr = (ArrayList<User>) tempMap.get("result");
+        for (User usr : resultArr) {
+            System.out.println(usr.getUserName());
+        }
+    }
 }

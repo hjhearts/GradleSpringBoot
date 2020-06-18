@@ -2,8 +2,6 @@ package com.mygradle.commons.controller;
 
 import com.mygradle.commons.model.Todo;
 import com.mygradle.commons.model.TodoResource;
-import org.apache.coyote.Response;
-import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
