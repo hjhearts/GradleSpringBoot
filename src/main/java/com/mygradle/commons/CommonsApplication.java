@@ -1,12 +1,19 @@
 package com.mygradle.commons;
 
+import com.mygradle.commons.model.FreeBoardVO;
 import com.mygradle.commons.model.UserVO;
+import com.mygradle.commons.repository.FreeBoardRepository;
 import com.mygradle.commons.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @SpringBootApplication
 public class CommonsApplication implements CommandLineRunner {
@@ -36,13 +43,36 @@ public class CommonsApplication implements CommandLineRunner {
          */
         SpringApplication.run(CommonsApplication.class);
     }
-    @Autowired
     UserRepository userRepository;
 
-    @Override
-    public void run(String ...args){
-        userRepository.addUserInfo(new UserVO("insertTest", "test", "4321"));
-        System.out.println(userRepository.getUserInfoAll().toString());
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
+    FreeBoardRepository freeBoardRepository;
+
+    @Autowired
+    public void setFreeBoardRepository(FreeBoardRepository freeBoardRepository) {
+        this.freeBoardRepository = freeBoardRepository;
+    }
+
+    public void run(String ... args){
+        /*
+        FreeBoardVO freeBoardVO = new FreeBoardVO();
+        freeBoardVO.setUserName("한글테스트");
+        freeBoardVO.setCategory("101");
+        freeBoardVO.setContent("☜(ﾟヮﾟ☜) (☞ﾟヮﾟ)☞ ☜(ﾟヮﾟ☜) (☞ﾟヮﾟ)☞앗싸라비야");
+        freeBoardVO.setTitle("Hello!");
+        freeBoardRepository.registBoard(freeBoardVO);
+
+         */
+        List<String> userList = new ArrayList<>();
+        userList.add("test1");
+        userList.add("test2");
+        userList.add("test3");
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("user_list", userList);
+        System.out.println(userRepository.findByForEach(paramMap));
+    }
 }

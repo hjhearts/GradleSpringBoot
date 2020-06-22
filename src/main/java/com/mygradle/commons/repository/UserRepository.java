@@ -5,7 +5,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class UserRepository {
@@ -24,5 +26,19 @@ public class UserRepository {
 
     public void addUserInfo(UserVO userVO){
         sqlSessionTemplate.insert(MAPPER_NAME_SPACE + "addUserInfo", userVO);
+    }
+
+    public List<String> findByUserNameLike(String username){
+        return sqlSessionTemplate.selectList(MAPPER_NAME_SPACE + "findByUserNameLike", username);
+    }
+
+    public UserVO findByUserName(String username){
+        Map<String, Object> params = new HashMap<>();
+        params.put("username", username);
+        return sqlSessionTemplate.selectOne(MAPPER_NAME_SPACE + "findByUserName", params);
+    }
+
+    public List<String> findByForEach(Map<String, Object> paramMap){
+        return sqlSessionTemplate.selectList(MAPPER_NAME_SPACE + "foreachUserList", paramMap);
     }
 }
