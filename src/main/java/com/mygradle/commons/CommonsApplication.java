@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @SpringBootApplication
-public class CommonsApplication implements CommandLineRunner {
+public class CommonsApplication {
 
     public static void main(String[] args) {
         /* Bean Initialize Check Code
@@ -41,8 +41,9 @@ public class CommonsApplication implements CommandLineRunner {
         SchoolService schoolService = context.getBean(SchoolService.class);
         schoolService.findStudentInfo();
          */
-        SpringApplication.run(CommonsApplication.class);
+        SpringApplication.run(CommonsApplication.class, args);
     }
+    /*
     UserRepository userRepository;
 
     @Autowired
@@ -66,7 +67,7 @@ public class CommonsApplication implements CommandLineRunner {
         freeBoardVO.setTitle("Hello!");
         freeBoardRepository.registBoard(freeBoardVO);
 
-         */
+
         List<String> userList = new ArrayList<>();
         userList.add("test1");
         userList.add("test2");
@@ -75,4 +76,5 @@ public class CommonsApplication implements CommandLineRunner {
         paramMap.put("user_list", userList);
         System.out.println(userRepository.findByForEach(paramMap));
     }
+    */
 }

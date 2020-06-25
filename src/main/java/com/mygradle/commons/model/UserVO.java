@@ -1,9 +1,11 @@
 package com.mygradle.commons.model;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 public class UserVO implements Serializable {
     private String id;
+    @NotNull(message = "username이 null입니다.")
     private String username;
     private String password;
 

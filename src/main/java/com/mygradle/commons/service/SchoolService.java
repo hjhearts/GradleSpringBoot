@@ -38,7 +38,7 @@ public class SchoolService {
 
         schoolRepository.save(school1);
         schoolRepository.save(school2);
-
+        studentRepository.save(new Student("Han"));
         List<School> schools = schoolRepository.findAll();
 
         for(School s : schools){

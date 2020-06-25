@@ -17,7 +17,7 @@
         from tbl_user
         where username like '%${username}%'
     </select>
-    <select id="findByUserName" parameterType="map" resultMap="userResultMap">
+    <select id="findByUserName" parameterType="string" resultMap="userResultMap">
         select *
         from tbl_user
         where username = #{username}

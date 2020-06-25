@@ -1,34 +1,51 @@
 package com.mygradle.commons.controller;
 
+import com.mygradle.commons.exception.UserNotFoundException;
 import com.mygradle.commons.model.User;
+import com.mygradle.commons.model.UserVO;
+import com.mygradle.commons.service.UserService;
+import io.swagger.models.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
-    private static List<User> userList = new ArrayList<>();
-    static {
-        userList.add(new User(1, "jpub1", "user01@test.com", "remind", new Date()));
-        userList.add(new User(2, "jpub2", "user02@test.com", "restart", new Date()));
-        userList.add(new User(3, "jpub3", "user03@test.com", "nine", new Date()));
-        userList.add(new User(4, "jpub4", "user04@test.com", "namu", new Date()));
+    private UserService userService;
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
-    @RequestMapping(value = "/user/{userNo}")
+    @RequestMapping(value = "/userno/{userNo}")
     public ResponseEntity<User> getUserInfo(@PathVariable(value = "userNo") int userNo){
-        User user = userList.get(userNo);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/user")
-    public ResponseEntity<Map<String, Object>> getUserList(){
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("result", userList);
+    @RequestMapping
+    public ResponseEntity<Iterable<UserVO>> getUserList(){
+        Iterable<UserVO> resultMap = userService.findAllUserInfo();
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
+    }
+
+    @RequestMapping("/regist")
+    public ResponseEntity<?> regist(@Validated @RequestBody UserVO userVO){
+        userService.createUser(userVO);
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/username/{username}", method = RequestMethod.GET)
+    public ResponseEntity<?> findByUserOne(@PathVariable("username") String username){
+        UserVO user = userService.findByOneUserName(username);
+        if(user == null){
+            throw new UserNotFoundException("User Not Found");
+        }
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }

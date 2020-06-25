@@ -20,7 +20,7 @@ public class UserRepository {
         this.sqlSessionTemplate = sqlSessionTemplate;
     }
 
-    public List<String> getUserInfoAll(){
+    public Iterable<UserVO> getUserInfoAll(){
         return sqlSessionTemplate.selectList(MAPPER_NAME_SPACE + "selectUserInfoAll");
     }
 
@@ -28,14 +28,12 @@ public class UserRepository {
         sqlSessionTemplate.insert(MAPPER_NAME_SPACE + "addUserInfo", userVO);
     }
 
-    public List<String> findByUserNameLike(String username){
+    public Iterable<UserVO> findByUserNameLike(String username){
         return sqlSessionTemplate.selectList(MAPPER_NAME_SPACE + "findByUserNameLike", username);
     }
 
     public UserVO findByUserName(String username){
-        Map<String, Object> params = new HashMap<>();
-        params.put("username", username);
-        return sqlSessionTemplate.selectOne(MAPPER_NAME_SPACE + "findByUserName", params);
+        return sqlSessionTemplate.selectOne(MAPPER_NAME_SPACE + "findByUserName", username);
     }
 
     public List<String> findByForEach(Map<String, Object> paramMap){
