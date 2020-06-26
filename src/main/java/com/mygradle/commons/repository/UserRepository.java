@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Repository
+@Repository("userRepository")
 public class UserRepository {
     private static final String MAPPER_NAME_SPACE = "sample.mapper.userMapper.";
 
